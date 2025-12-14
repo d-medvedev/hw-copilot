@@ -49,8 +49,21 @@ streamlit run app.py
 
 ## Структура проекта
 
+### 🚀 Main Branch - Рабочий сервис
 - `proxy/` - FastAPI сервер для обработки запросов к OpenAI API
 - `streamlit_app/` - Streamlit интерфейс для взаимодействия с пользователем
 - `requirements.txt` - зависимости Python
 - `Dockerfile` - конфигурация Docker для обоих сервисов
 - `docker-compose.yml` - конфигурация для запуска через Docker Compose
+
+### 🔬 Research Branches - Исследования и эксперименты
+
+- `research/llm-circuit-analysis-12models-benchmark` - Полное исследование с 12 LLM моделями
+- `research/article-and-documentation` - Научная статья и документация
+- `research/benchmarks-and-experiments` - Бенчмарки и эксперименты
+- `research/spice-generation-tools` - Инструменты генерации SPICE netlists
+
+Для доступа к исследованиям:
+```bash
+git checkout research/llm-circuit-analysis-12models-benchmark
+```
