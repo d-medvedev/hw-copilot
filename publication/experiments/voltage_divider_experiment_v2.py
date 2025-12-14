@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-LLM-агент для анализа электронных схем
-Эксперимент 1: Делители напряжения
+LLM-агент для анализа электронных схем v2.0
+Эксперимент 1: Делители напряжения (с Structured Output)
 """
 
 import numpy as np
@@ -63,10 +63,10 @@ R2 VOUT 0 {self.r2}
 - Ток: {current*1000:.1f} мА"""
 
 
-class CircuitAnalysisAgent:
-    """LLM-агент для анализа электронных схем"""
+class CircuitAnalysisAgentV2:
+    """LLM-агент для анализа электронных схем с Structured Output"""
     
-    def __init__(self, model_name: str = "gpt-4o"):
+    def __init__(self, model_name: str = "gpt-4o-2024-08-06"):
         self.model_name = model_name
         self.client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
         
@@ -113,7 +113,7 @@ class CircuitAnalysisAgent:
     
     def analyze_voltage_divider(self, divider: VoltageDivider, 
                                requirements: str = "") -> Dict:
-        """Анализ делителя напряжения через LLM"""
+        """Анализ делителя напряжения через LLM с Structured Output"""
         
         prompt = f"""Ты - опытный инженер-электронщик. Проанализируй эту схему делителя напряжения:
 
@@ -130,8 +130,8 @@ NETLIST:
 
 1. РАСЧЕТНАЯ ПРОВЕРКА:
    - Проверь расчет выходного напряжения
-   - Рассчитай ток через делитель
-   - Оцени мощность рассеивания на резисторах
+   - Рассчитай ток через делитель (в мА)
+   - Оцени мощность рассеивания на резисторах (в мВт)
 
 2. ИНЖЕНЕРНАЯ ОЦЕНКА:
    - Соответствие требованиям
@@ -234,6 +234,8 @@ def analyze_experiment_results(results):
     
     print(f"📊 РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА:")
     print(f"Успешных анализов LLM: {len(successful_analyses)}/{len(results)}")
+    success_rate = len(successful_analyses) / len(results) * 100
+    print(f"Надежность системы: {success_rate:.1f}%")
     
     if not successful_analyses:
         print("❌ Нет успешных анализов для сравнения")
@@ -242,11 +244,18 @@ def analyze_experiment_results(results):
     # Сравнение расчетов
     voltage_errors = []
     current_errors = []
+    power_errors = []
     rating_matches = 0
     
-    for result in successful_analyses:
+    print(f"\n📈 ДЕТАЛЬНОЕ СРАВНЕНИЕ:")
+    for i, result in enumerate(successful_analyses):
         expert = result["expert"]["calculations"]
         llm = result["llm"]["calculations"]
+        
+        print(f"\n🔍 Делитель {result['divider_id']}:")
+        print(f"  Напряжение: Эксперт={expert['vout_calculated']}В, LLM={llm['vout_calculated']}В")
+        print(f"  Ток: Эксперт={expert['current_ma']}мА, LLM={llm['current_ma']}мА")
+        print(f"  Оценка: Эксперт='{result['expert']['overall_rating']}', LLM='{result['llm']['overall_rating']}'")
         
         # Относительные ошибки
         if expert["vout_calculated"] != 0:
@@ -257,34 +266,46 @@ def analyze_experiment_results(results):
             i_error = abs(expert["current_ma"] - llm["current_ma"]) / expert["current_ma"]
             current_errors.append(i_error * 100)
         
+        # Средняя ошибка по мощности
+        p1_error = abs(expert["power_r1_mw"] - llm["power_r1_mw"]) / expert["power_r1_mw"] if expert["power_r1_mw"] != 0 else 0
+        p2_error = abs(expert["power_r2_mw"] - llm["power_r2_mw"]) / expert["power_r2_mw"] if expert["power_r2_mw"] != 0 else 0
+        power_errors.append((p1_error + p2_error) / 2 * 100)
+        
         # Совпадение оценок
         if result["expert"]["overall_rating"] == result["llm"]["overall_rating"]:
             rating_matches += 1
     
-    print(f"\n📈 ТОЧНОСТЬ РАСЧЕТОВ:")
+    print(f"\n📊 СТАТИСТИКА ТОЧНОСТИ:")
     if voltage_errors:
-        print(f"Средняя ошибка напряжения: {np.mean(voltage_errors):.1f}%")
-        print(f"Максимальная ошибка напряжения: {np.max(voltage_errors):.1f}%")
+        print(f"Средняя ошибка напряжения: {np.mean(voltage_errors):.2f}%")
+        print(f"Максимальная ошибка напряжения: {np.max(voltage_errors):.2f}%")
     
     if current_errors:
-        print(f"Средняя ошибка тока: {np.mean(current_errors):.1f}%")
+        print(f"Средняя ошибка тока: {np.mean(current_errors):.2f}%")
+        print(f"Максимальная ошибка тока: {np.max(current_errors):.2f}%")
+    
+    if power_errors:
+        print(f"Средняя ошибка мощности: {np.mean(power_errors):.2f}%")
     
     print(f"\n🎯 СОГЛАСИЕ В ОЦЕНКАХ:")
     agreement_rate = rating_matches / len(successful_analyses) * 100
     print(f"Совпадение итоговых оценок: {agreement_rate:.1f}%")
     
     return {
+        "success_rate": success_rate,
         "voltage_errors": voltage_errors,
         "current_errors": current_errors,
+        "power_errors": power_errors,
         "agreement_rate": agreement_rate
     }
 
 
 def main():
-    """Главная функция эксперимента"""
+    """Главная функция эксперимента v2.0"""
     
-    print("🔬 LLM-агент для анализа электронных схем")
-    print("=" * 50)
+    print("🔬 LLM-агент для анализа электронных схем v2.0")
+    print("🚀 С использованием Structured Output для надежности")
+    print("=" * 60)
     
     # Создаем набор тестовых делителей
     test_dividers = [
@@ -299,17 +320,17 @@ def main():
     for i, div in enumerate(test_dividers):
         print(f"\n{i+1}. {div.to_description()}")
     
-    # Создаем агента
-    agent = CircuitAnalysisAgent()
-    print("\n🤖 LLM-агент создан")
+    # Создаем агента v2
+    agent = CircuitAnalysisAgentV2()
+    print("\n🤖 LLM-агент v2.0 создан (с Structured Output)")
     
     # Тестируем эталонный анализ
-    print("\n🔬 Тест эталонного анализа:")
+    print("\n🔬 Тест эталонного анализ:")
     test_expert = expert_analysis(test_dividers[0])
     print(json.dumps(test_expert, indent=2, ensure_ascii=False))
     
     # Проводим сравнительный анализ
-    print("\n🚀 Запуск эксперимента...")
+    print("\n🚀 Запуск эксперимента v2.0...")
     results = []
     
     for i, divider in enumerate(test_dividers):
@@ -318,7 +339,7 @@ def main():
         # Эталонный анализ
         expert_result = expert_analysis(divider)
         
-        # LLM анализ
+        # LLM анализ v2
         llm_result = agent.analyze_voltage_divider(divider)
         
         # Сохраняем результаты
@@ -333,20 +354,30 @@ def main():
             "llm": llm_result
         })
         
-        print(f"✅ Делитель {i+1} проанализирован")
+        if "error" in llm_result:
+            print(f"❌ Ошибка в анализе делителя {i+1}: {llm_result['error']}")
+        else:
+            print(f"✅ Делитель {i+1} проанализирован успешно")
     
-    print(f"\n🎉 Эксперимент завершен! Проанализировано {len(results)} схем")
+    print(f"\n🎉 Эксперимент v2.0 завершен! Проанализировано {len(results)} схем")
     
     # Анализируем результаты
-    print("\n" + "="*50)
+    print("\n" + "="*60)
     metrics = analyze_experiment_results(results)
     
     # Сохраняем результаты
-    output_file = Path("publication/experiments/voltage_divider_results.json")
+    output_file = Path("publication/experiments/voltage_divider_results_v2.json")
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     
-    print(f"\n💾 Результаты сохранены в {output_file}")
+    print(f"\n💾 Результаты v2.0 сохранены в {output_file}")
+    
+    # Сравнение с v1
+    if metrics:
+        print(f"\n🆚 СРАВНЕНИЕ С v1.0:")
+        print(f"v1.0 надежность: 20% (1/5)")
+        print(f"v2.0 надежность: {metrics['success_rate']:.1f}%")
+        print(f"Улучшение: {metrics['success_rate'] - 20:.1f} процентных пунктов")
 
 
 if __name__ == "__main__":

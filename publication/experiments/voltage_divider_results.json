@@ -1,0 +1,147 @@
+[
+  {
+    "divider_id": 1,
+    "circuit": {
+      "r1": 10000,
+      "r2": 10000,
+      "vin": 12
+    },
+    "expert": {
+      "calculations": {
+        "vout_calculated": 6.0,
+        "current_ma": 0.6,
+        "power_r1_mw": 3.6,
+        "power_r2_mw": 3.6
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 6.0,
+        "current_ma": 0.6,
+        "power_r1_mw": 3.6,
+        "power_r2_mw": 3.6
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [
+        "Убедитесь, что резисторы рассчитаны на мощность не менее 0.25 Вт для надежности.",
+        "Если требуется более высокая точность, используйте резисторы с меньшим допуском, например, 1%."
+      ],
+      "overall_rating": "отлично"
+    }
+  },
+  {
+    "divider_id": 2,
+    "circuit": {
+      "r1": 20000,
+      "r2": 10000,
+      "vin": 12
+    },
+    "expert": {
+      "calculations": {
+        "vout_calculated": 4.0,
+        "current_ma": 0.4,
+        "power_r1_mw": 3.2,
+        "power_r2_mw": 1.6
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "error": "Extra data: line 20 column 1 (char 610)"
+    }
+  },
+  {
+    "divider_id": 3,
+    "circuit": {
+      "r1": 10000,
+      "r2": 5000,
+      "vin": 12
+    },
+    "expert": {
+      "calculations": {
+        "vout_calculated": 4.0,
+        "current_ma": 0.8,
+        "power_r1_mw": 6.4,
+        "power_r2_mw": 3.2
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "error": "Extra data: line 16 column 1 (char 294)"
+    }
+  },
+  {
+    "divider_id": 4,
+    "circuit": {
+      "r1": 1000,
+      "r2": 1000,
+      "vin": 5
+    },
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 2.5,
+        "power_r1_mw": 6.2,
+        "power_r2_mw": 6.2
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "error": "Extra data: line 19 column 1 (char 489)"
+    }
+  },
+  {
+    "divider_id": 5,
+    "circuit": {
+      "r1": 4700,
+      "r2": 2200,
+      "vin": 9
+    },
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.87,
+        "current_ma": 1.3,
+        "power_r1_mw": 8.0,
+        "power_r2_mw": 3.7
+      },
+      "assessment": {
+        "meets_requirements": true,
+        "practical_values": true,
+        "potential_issues": []
+      },
+      "recommendations": [],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "error": "Extra data: line 23 column 1 (char 654)"
+    }
+  }
+]
