@@ -1,0 +1,37 @@
+{
+  "models": [
+    {
+      "name": "GPT-4o",
+      "provider": "openrouter",
+      "model_id": "openai/gpt-4o",
+      "group": "commercial",
+      "size": "large",
+      "api_key_env": "OPENROUTER_API_KEY"
+    },
+    {
+      "name": "Claude 3.5 Sonnet",
+      "provider": "openrouter",
+      "model_id": "anthropic/claude-3.5-sonnet",
+      "group": "commercial",
+      "size": "large",
+      "api_key_env": "OPENROUTER_API_KEY"
+    },
+    {
+      "name": "Llama 3.1 70B",
+      "provider": "openrouter",
+      "model_id": "meta-llama/llama-3.1-70b-instruct",
+      "group": "opensource",
+      "size": "large",
+      "api_key_env": "OPENROUTER_API_KEY"
+    },
+    {
+      "name": "Llama 3.1 8B",
+      "provider": "openrouter",
+      "model_id": "meta-llama/llama-3.1-8b-instruct",
+      "group": "opensource",
+      "size": "small",
+      "api_key_env": "OPENROUTER_API_KEY"
+    }
+  ]
+}
+

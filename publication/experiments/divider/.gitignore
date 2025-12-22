@@ -1,0 +1,41 @@
+# Временные тестовые файлы
+test_*.py
+test_*.json
+*_test.json
+*_test_*.json
+
+# Старые версии
+*_v3.py
+*_v3.json
+*_v2.py
+*_v2.json
+
+# Временные конфигурации
+models_config_new.json
+
+# Временные документы
+test_summary.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+

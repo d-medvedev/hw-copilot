@@ -1,0 +1,1754 @@
+[
+  {
+    "case_id": 1,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 3.27,
+        "current_ma": 0.33,
+        "power_r1_mw": 2.9,
+        "power_r2_mw": 1.1
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": true
+      },
+      "detected_errors": [],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "отлично"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 3.27,
+        "current_ma": 0.3,
+        "power_r1_mw": 0.107,
+        "power_r2_mw": 0.09
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": true
+      },
+      "detected_errors": [],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя может быть слишком высоким для некоторых нагрузок.",
+          "reason": "Выходной импеданс делителя составляет 8.67 кОм, что может быть проблемой для низкоомных нагрузок.",
+          "suggested_improvement": "Рассмотреть возможность уменьшения значений резисторов для снижения выходного импеданса."
+        }
+      ],
+      "recommendations": [
+        "Проверить использование резисторов с низким температурным коэффициентом для повышения стабильности выходного напряжения.",
+        "Добавить защитные элементы, такие как TVS-диоды, для защиты от перенапряжений."
+      ],
+      "overall_rating": "хорошо"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [],
+      "false_negatives": [],
+      "precision": 0.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "test_case_info": {
+      "name": "Корректный делитель 3.3В",
+      "description": "Правильно рассчитанный делитель",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В ±5%\n            - Выходное напряжение: 3.3В ±2%\n            - Максимальный ток потребления: 1мА\n            - Максимальная мощность резисторов: 0.25Вт\n            - Температурный диапазон: -40°C...+85°C\n            ",
+      "circuit": {
+        "r1": 26700,
+        "r2": 10000,
+        "vin": 12.0
+      },
+      "expected_error_types": [],
+      "expected_error_count": 0
+    }
+  },
+  {
+    "case_id": 2,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 4.0,
+        "current_ma": 0.8,
+        "power_r1_mw": 6.4,
+        "power_r2_mw": 3.2
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Неверное соотношение резисторов - выходное напряжение не соответствует требуемому",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_1_wrong_ratio"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 4.0,
+        "current_ma": 0.8,
+        "power_r1_mw": 64.0,
+        "power_r2_mw": 32.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": false,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Выходное напряжение 4.0В не соответствует требуемому 5.0В ±1%.",
+          "severity": "значительная",
+          "suggested_fix": "Изменить соотношение резисторов для достижения выходного напряжения 5.0В."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (2.0 кОм) не соответствует требованиям ТЗ.",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить выходной импеданс, чтобы он соответствовал требованиям."
+        }
+      ],
+      "warnings": [],
+      "recommendations": [
+        "Провести перерасчет резисторов для достижения необходимого выходного напряжения.",
+        "Рассмотреть возможность добавления защиты от перенапряжений.",
+        "Проверить использование резисторов с низким температурным коэффициентом для повышения точности."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_1_wrong_ratio"
+      ],
+      "false_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Неверное соотношение резисторов",
+      "description": "Неправильный номинал R2 - выходное напряжение не соответствует требуемому",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В ±5%\n            - Выходное напряжение: 5.0В ±1%\n            - Максимальный ток потребления: 2мА\n            - Максимальная мощность резисторов: 0.25Вт\n            ",
+      "circuit": {
+        "r1": 10000,
+        "r2": 5000,
+        "vin": 12.0
+      },
+      "expected_error_types": [
+        "type_1_wrong_ratio"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 3,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 6.0,
+        "current_ma": 60.0,
+        "power_r1_mw": 360.0,
+        "power_r2_mw": 360.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_2_too_small",
+          "description": "Слишком маленькие номиналы резисторов - перегрев, высокий ток, превышение мощности. КРИТЕРИИ: R_total < 100 Ом (всегда ошибка) ИЛИ (R_total < 1 кОм И I_divider > 5 мА). Граничные случаи (R_total = 100 Ом или R_total = 1 кОм) считаются ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_2_too_small"
+        },
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Превышение допустимой мощности резисторов - мощность превышает номинальную мощность компонентов",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_6_power_exceed"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 6,
+        "current_ma": 60,
+        "power_r1_mw": 360,
+        "power_r2_mw": 360
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": false,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Мощность на резисторах превышает допустимую мощность 0.125Вт.",
+          "severity": "критическая",
+          "suggested_fix": "Использовать резисторы с более высоким номиналом мощности."
+        },
+        {
+          "error_type": "type_2_too_small",
+          "description": "Суммарное сопротивление резисторов равно 100 Ом, что является граничным случаем и считается ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Увеличить номиналы резисторов для повышения общего сопротивления."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя не указан в ТЗ, но может быть проблемой при подключении нагрузки.",
+          "reason": "Не указано требование к выходному импедансу в ТЗ.",
+          "suggested_improvement": "Уточнить требования к выходному импедансу для обеспечения совместимости с нагрузкой."
+        },
+        {
+          "warning_type": "type_7_no_protection",
+          "description": "Отсутствует защита от перенапряжений.",
+          "reason": "В ТЗ не указано требование о защите, но это важно для надежности.",
+          "suggested_improvement": "Добавить защитные элементы, такие как TVS-диоды."
+        }
+      ],
+      "recommendations": [
+        "Увеличить номиналы резисторов для снижения тока и мощности на них.",
+        "Добавить защитные элементы для повышения надежности схемы.",
+        "Уточнить требования к выходному импедансу и нагрузке."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_2_too_small",
+        "type_6_power_exceed"
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "test_case_info": {
+      "name": "Слишком маленькие номиналы и превышение мощности",
+      "description": "Слишком малые номиналы приводят к превышению мощности",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 6В ±5%\n            - Максимальная мощность резисторов: 0.125Вт (1/8Вт)\n            - Надежность: промышленное применение\n            ",
+      "circuit": {
+        "r1": 100,
+        "r2": 100,
+        "vin": 12.0
+      },
+      "expected_error_types": [
+        "type_2_too_small",
+        "type_6_power_exceed"
+      ],
+      "expected_error_count": 2
+    }
+  },
+  {
+    "case_id": 4,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 4.5,
+        "current_ma": 4.5,
+        "power_r1_mw": 20.2,
+        "power_r2_mw": 20.2
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_2_too_small",
+          "description": "Слишком маленькие номиналы резисторов - перегрев, высокий ток, превышение мощности. КРИТЕРИИ: R_total < 100 Ом (всегда ошибка) ИЛИ (R_total < 1 кОм И I_divider > 5 мА). Граничные случаи (R_total = 100 Ом или R_total = 1 кОм) считаются ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_2_too_small"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 4.5,
+        "current_ma": 4.5,
+        "power_r1_mw": 20.25,
+        "power_r2_mw": 20.25
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": false,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_2_too_small",
+          "description": "Суммарное сопротивление делителя (R1 + R2) составляет 2000 Ом, но ток делителя превышает 5 мА, что является нарушением.",
+          "severity": "критическая",
+          "suggested_fix": "Увеличить номиналы резисторов для снижения тока."
+        },
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Ток делителя (4.5 мА) слишком высок для подключения к АЦП, если требуется ток менее 0.1 мА.",
+          "severity": "критическая",
+          "suggested_fix": "Снизить ток делителя до 0.1 мА, изменив значения резисторов."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя может быть сопоставим с нагрузкой, что может привести к ошибкам в измерениях.",
+          "reason": "Не указано требование к выходному импедансу в ТЗ.",
+          "suggested_improvement": "Добавить информацию о выходном импедансе и его соответствии требованиям нагрузки."
+        },
+        {
+          "warning_type": "type_7_no_protection",
+          "description": "Отсутствие защиты от перенапряжений.",
+          "reason": "Не указано требование о защите в ТЗ.",
+          "suggested_improvement": "Добавить защитные элементы, такие как TVS-диоды."
+        }
+      ],
+      "recommendations": [
+        "Увеличить номиналы резисторов для снижения тока до 0.1 мА.",
+        "Добавить защитные элементы для предотвращения перенапряжений.",
+        "Проверить соответствие выходного импеданса требованиям нагрузки."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_2_too_small"
+      ],
+      "false_positives": [
+        "type_5_adc_mismatch"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Высокий ток потребления",
+      "description": "Неприемлемо высокий ток для батарейного питания",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 9В (батарея)\n            - Выходное напряжение: 4.5В ±3%\n            - Максимальный ток потребления: 0.1мА (для экономии батареи)\n            - Время работы от батареи: >1000 часов\n            ",
+      "circuit": {
+        "r1": 1000,
+        "r2": 1000,
+        "vin": 9.0
+      },
+      "expected_error_types": [
+        "type_2_too_small"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 5,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 5.0,
+        "current_ma": 0.5,
+        "power_r1_mw": 5.0,
+        "power_r2_mw": 2.5
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Неверное соотношение резисторов - выходное напряжение не соответствует требуемому",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_1_wrong_ratio"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 5.0,
+        "current_ma": 0.5,
+        "power_r1_mw": 5.0,
+        "power_r2_mw": 2.5
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": false,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Выходное напряжение 5.00 В не соответствует требуемому 10 В ±1%.",
+          "severity": "критическая",
+          "suggested_fix": "Изменить соотношение резисторов для достижения требуемого выходного напряжения."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (R_out = 6.67 кОм) не соответствует требованиям ТЗ.",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить выходной импеданс, чтобы он соответствовал требованиям."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_2_too_small",
+          "description": "Ток делителя 0.5 мА не превышает 5 мА, но резисторы не слишком маленькие.",
+          "reason": "Ток в пределах нормы, но стоит учитывать, что при малом значении R_total возможны проблемы с перегревом.",
+          "suggested_improvement": "Рассмотреть возможность увеличения значений резисторов для повышения надежности."
+        },
+        {
+          "warning_type": "type_3_too_large",
+          "description": "Суммарное сопротивление R_total = 30 кОм, что может привести к чувствительности к шумам.",
+          "reason": "Хотя это не ошибка, стоит учитывать возможные проблемы с шумами.",
+          "suggested_improvement": "Проверить схему на чувствительность к шумам и, при необходимости, уменьшить сопротивление."
+        }
+      ],
+      "recommendations": [
+        "Провести перерасчет резисторов для достижения требуемого выходного напряжения 10 В.",
+        "Убедиться, что выходной импеданс соответствует требованиям ТЗ.",
+        "Рассмотреть возможность добавления защиты от перенапряжений."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_1_wrong_ratio"
+      ],
+      "false_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Неправильное соотношение делителя",
+      "description": "Неправильное понимание соотношения делителя",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 15В\n            - Выходное напряжение: 10В ±1%\n            - Соотношение делителя: 2:3 (R1:R2)\n            - Точность: высокая (резисторы 1%)\n            ",
+      "circuit": {
+        "r1": 20000,
+        "r2": 10000,
+        "vin": 15.0
+      },
+      "expected_error_types": [
+        "type_1_wrong_ratio"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 6,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 18.0,
+        "current_ma": 1.28,
+        "power_r1_mw": 7.7,
+        "power_r2_mw": 23.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Неверное соотношение резисторов - выходное напряжение не соответствует требуемому",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_1_wrong_ratio"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 8.0,
+        "current_ma": 1.3,
+        "power_r1_mw": 0.00882,
+        "power_r2_mw": 0.0234
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": false,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Выходное напряжение 18.00 В не соответствует требуемому 8В ±2%.",
+          "severity": "критическая",
+          "suggested_fix": "Изменить значения резисторов R1 и R2 для достижения необходимого выходного напряжения."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (2.92 кОм) не соответствует требованию о нагрузочной способности (5 мА).",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить выходной импеданс, чтобы соответствовать требованиям нагрузки."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_2_too_small",
+          "description": "Ток делителя 1.3 мА меньше максимального значения 5 мА, что может привести к недостаточной нагрузочной способности.",
+          "reason": "Ток делителя ниже требуемого значения.",
+          "suggested_improvement": "Увеличить значения резисторов для достижения необходимого тока."
+        },
+        {
+          "warning_type": "type_3_too_large",
+          "description": "Суммарное сопротивление R_total = 18800 Ом, что может привести к чувствительности к шумам.",
+          "reason": "Слишком высокие значения резисторов.",
+          "suggested_improvement": "Использовать резисторы меньшего номинала для улучшения стабильности."
+        }
+      ],
+      "recommendations": [
+        "Пересмотреть значения резисторов R1 и R2 для достижения требуемого выходного напряжения 8В ±2%.",
+        "Убедиться, что выходной импеданс соответствует требованиям нагрузки.",
+        "Проверить возможность использования резисторов с меньшими значениями для улучшения стабильности и уменьшения чувствительности к шумам."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_1_wrong_ratio"
+      ],
+      "false_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Перепутаны резисторы местами",
+      "description": "Перепутаны местами верхний и нижний резисторы",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 24В (промышленное)\n            - Выходное напряжение: 8В ±2%\n            - Нагрузочная способность: 5мА\n            - Стабильность: промышленный стандарт\n            ",
+      "circuit": {
+        "r1": 4700,
+        "r2": 14100,
+        "vin": 24.0
+      },
+      "expected_error_types": [
+        "type_1_wrong_ratio"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 7,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 3.311,
+        "current_ma": 0.33,
+        "power_r1_mw": 8.8,
+        "power_r2_mw": 1.1
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_7_no_protection",
+          "description": "Отсутствие защиты от перенапряжений - нет TVS, диодов при необходимости",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_7_no_protection"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 3.31,
+        "current_ma": 0.3,
+        "power_r1_mw": 0.0009,
+        "power_r2_mw": 0.009
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": true
+      },
+      "detected_errors": [],
+      "warnings": [
+        {
+          "warning_type": "type_7_no_protection",
+          "description": "Отсутствие защиты от перенапряжения",
+          "reason": "В ТЗ указано, что защита от перенапряжения обязательна, но в схеме ее нет.",
+          "suggested_improvement": "Добавить защитные элементы, такие как TVS-диоды или варисторы."
+        },
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Игнорирование нагрузки",
+          "reason": "Не указаны параметры нагрузки, что может привести к проблемам с выходным импедансом.",
+          "suggested_improvement": "Уточнить параметры нагрузки и проверить соответствие выходного импеданса."
+        }
+      ],
+      "recommendations": [
+        "Добавить защиту от перенапряжения (например, TVS-диоды).",
+        "Уточнить параметры нагрузки для более точного анализа выходного импеданса."
+      ],
+      "overall_rating": "хорошо"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [],
+      "false_negatives": [
+        "type_7_no_protection"
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0
+    },
+    "test_case_info": {
+      "name": "Отсутствие защитных элементов",
+      "description": "Отсутствуют необходимые защитные элементы",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 30В (с возможными выбросами до 40В)\n            - Выходное напряжение: 3.3В ±1%\n            - Защита от перенапряжения: обязательна\n            - Фильтрация помех: RC-фильтр на выходе\n            - Применение: чувствительная аналоговая схема\n            ",
+      "circuit": {
+        "r1": 80600,
+        "r2": 10000,
+        "vin": 30.0
+      },
+      "expected_error_types": [
+        "type_7_no_protection"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 8,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 2.5,
+        "power_r1_mw": 6.2,
+        "power_r2_mw": 6.2
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_8_tcr_ignored",
+          "description": "Игнорирование температурного коэффициента (TCR) - использование резисторов с высоким ТКС для прецизионных применений",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_8_tcr_ignored"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 2.5,
+        "power_r1_mw": 6.25,
+        "power_r2_mw": 6.25
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_8_tcr_ignored",
+          "description": "Использованы углеродные резисторы с высоким температурным коэффициентом (±3000ppm/°C) вместо прецизионных с TCR <50ppm/°C.",
+          "severity": "значительная",
+          "suggested_fix": "Заменить резисторы на прецизионные с TCR <50ppm/°C."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя не соответствует требованиям, так как не указано требование к выходному импедансу, но выходной импеданс может быть слишком высоким для некоторых нагрузок.",
+          "severity": "незначительная",
+          "suggested_fix": "Уточнить требования к выходному импедансу в ТЗ."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_6_power_exceed",
+          "description": "Мощность резисторов на грани допустимого значения (6.25 мВт), что может привести к перегреву.",
+          "reason": "Резисторы имеют мощность 0.125Вт, но при длительной работе могут перегреваться.",
+          "suggested_improvement": "Использовать резисторы с большей мощностью."
+        }
+      ],
+      "recommendations": [
+        "Заменить углеродные резисторы на прецизионные с низким температурным коэффициентом.",
+        "Уточнить требования к выходному импедансу в ТЗ.",
+        "Использовать резисторы с большей мощностью для повышения надежности."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_8_tcr_ignored"
+      ],
+      "false_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Температурная нестабильность",
+      "description": "Использование неподходящих резисторов для прецизионного применения",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В (стабилизированное)\n            - Выходное напряжение: 2.5В ±0.1%\n            - Температурный диапазон: -55°C...+125°C\n            - Температурный коэффициент: <50ppm/°C\n            - Применение: прецизионное измерение\n            ",
+      "circuit": {
+        "r1": 1000,
+        "r2": 1000,
+        "vin": 5.0
+      },
+      "expected_error_types": [
+        "type_8_tcr_ignored"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 9,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 14.831,
+        "current_ma": 6.74,
+        "power_r1_mw": 21.4,
+        "power_r2_mw": 100.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Неверное соотношение резисторов - выходное напряжение не соответствует требуемому",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_1_wrong_ratio"
+        },
+        {
+          "error_type": "type_2_too_small",
+          "description": "Слишком маленькие номиналы резисторов - перегрев, высокий ток, превышение мощности. КРИТЕРИИ: R_total < 100 Ом (всегда ошибка) ИЛИ (R_total < 1 кОм И I_divider > 5 мА). Граничные случаи (R_total = 100 Ом или R_total = 1 кОм) считаются ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_2_too_small"
+        },
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Превышение допустимой мощности резисторов - мощность превышает номинальную мощность компонентов",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_6_power_exceed"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "неприемлемо"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 14.83,
+        "current_ma": 6.7,
+        "power_r1_mw": 21.39,
+        "power_r2_mw": 100.57
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": false,
+        "meets_current_spec": false,
+        "meets_power_spec": false,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Выходное напряжение 14.83В не соответствует требуемому 12В ±1%.",
+          "severity": "критическая",
+          "suggested_fix": "Изменить значения резисторов для достижения выходного напряжения 12В."
+        },
+        {
+          "error_type": "type_2_too_small",
+          "description": "Общая сопротивление R_total = 2.67 кОм, ток 6.7 мА превышает 5 мА, что нарушает требование.",
+          "severity": "критическая",
+          "suggested_fix": "Увеличить значения резисторов для снижения тока."
+        },
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Мощность на R2 составляет 100.57 мВт, что превышает максимальную мощность 100 мВт.",
+          "severity": "критическая",
+          "suggested_fix": "Использовать резисторы с более высоким номиналом мощности."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя не указан в ТЗ, но R_out = 188.89 Ом может быть сопоставим с нагрузкой.",
+          "reason": "Неизвестная нагрузка может повлиять на работу делителя.",
+          "suggested_improvement": "Уточнить требования к выходному импедансу."
+        },
+        {
+          "warning_type": "type_5_adc_mismatch",
+          "description": "Ток делителя 6.7 мА может быть недостаточен для некоторых АЦП.",
+          "reason": "Не указаны требования к току для АЦП в ТЗ.",
+          "suggested_improvement": "Уточнить требования к току делителя для совместимости с АЦП."
+        }
+      ],
+      "recommendations": [
+        "Пересмотреть значения резисторов для достижения требуемого выходного напряжения 12В.",
+        "Увеличить номиналы резисторов для снижения тока до безопасного уровня.",
+        "Использовать резисторы с более высоким номиналом мощности, чтобы избежать перегрева."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_2_too_small",
+        "type_1_wrong_ratio",
+        "type_6_power_exceed"
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "test_case_info": {
+      "name": "Множественные ошибки",
+      "description": "Схема с множественными критическими ошибками",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 18В ±10%\n            - Выходное напряжение: 12В ±1%\n            - Максимальный ток: 0.5мА\n            - Максимальная мощность: 0.1Вт на резистор\n            - Точность: ±0.5%\n            - Температурная стабильность: ±0.05%/°C\n            ",
+      "circuit": {
+        "r1": 470,
+        "r2": 2200,
+        "vin": 18.0
+      },
+      "expected_error_types": [
+        "type_1_wrong_ratio",
+        "type_2_too_small",
+        "type_6_power_exceed"
+      ],
+      "expected_error_count": 3
+    }
+  },
+  {
+    "case_id": 10,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 1.633,
+        "current_ma": 0.01,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Неверное соотношение резисторов - выходное напряжение не соответствует требуемому",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_1_wrong_ratio"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 1.63,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": false,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": false,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_1_wrong_ratio",
+          "description": "Выходное напряжение 1.63В не соответствует требуемому 1.65В ±0.5%.",
+          "severity": "значительная",
+          "suggested_fix": "Изменить значения резисторов R1 и R2 для достижения требуемого выходного напряжения."
+        },
+        {
+          "error_type": "type_3_too_large",
+          "description": "Суммарное сопротивление R_total = 297000 Ом, что превышает 1 МОм и ток делителя равен 0 мкА, что не соответствует требованиям. Ток должен быть > 10 мкА.",
+          "severity": "значительная",
+          "suggested_fix": "Уменьшить значения резисторов R1 и R2 для увеличения тока делителя."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (R_out = 0.0) не соответствует требованиям входного импеданса АЦП (>1 МОм).",
+          "severity": "значительная",
+          "suggested_fix": "Убедиться, что выходной импеданс делителя соответствует требованиям входного импеданса АЦП."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_5_adc_mismatch",
+          "description": "Ток делителя равен 0 мкА, что может привести к проблемам с АЦП, если он требует минимального тока для работы.",
+          "reason": "Требуется минимальный ток для корректной работы АЦП.",
+          "suggested_improvement": "Уменьшить значения резисторов для увеличения тока делителя."
+        }
+      ],
+      "recommendations": [
+        "Пересмотреть значения резисторов R1 и R2 для достижения требуемого выходного напряжения.",
+        "Убедиться, что выходной импеданс делителя соответствует требованиям входного импеданса АЦП.",
+        "Проверить, что ток делителя соответствует минимальным требованиям для работы с АЦП."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_1_wrong_ratio"
+      ],
+      "false_positives": [
+        "type_4_load_ignored",
+        "type_3_too_large"
+      ],
+      "false_negatives": [],
+      "precision": 0.3333333333333333,
+      "recall": 1.0,
+      "f1_score": 0.5
+    },
+    "test_case_info": {
+      "name": "Граничный случай - малое отклонение",
+      "description": "Граничный случай с небольшим превышением допуска",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 3.3В (от микроконтроллера)\n            - Выходное напряжение: 1.65В ±0.5%\n            - Максимальный ток: 10мкА (ультранизкое потребление)\n            - Входной импеданс АЦП: >1МОм\n            - Применение: батарейное устройство IoT\n            ",
+      "circuit": {
+        "r1": 150000,
+        "r2": 147000,
+        "vin": 3.3
+      },
+      "expected_error_types": [
+        "type_1_wrong_ratio"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 11,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_3_too_large",
+          "description": "Слишком большие номиналы резисторов - чувствительность к шумам, ошибки от входных токов. КРИТЕРИИ: R_total > 10 МОм (всегда ошибка) ИЛИ (R_total > 1 МОм И I_divider < 10 мкА). Граничные случаи (R_total = 10 МОм или R_total = 1 МОм) считаются ошибкой.",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_3_too_large"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Ток делителя должен быть > 10 * I_input_ADC, но I_divider = 0 мкА",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить сопротивление резисторов для увеличения тока делителя."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_3_too_large",
+          "description": "Суммарное сопротивление R_total = 20 МОм, что может привести к чувствительности к шумам.",
+          "reason": "Сопротивления резисторов слишком велики.",
+          "suggested_improvement": "Использовать резисторы меньшего номинала для снижения R_total."
+        }
+      ],
+      "recommendations": [
+        "Уменьшить номиналы резисторов для увеличения тока делителя и улучшения работы с АЦП.",
+        "Добавить защитные элементы для предотвращения перенапряжений."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [
+        "type_5_adc_mismatch"
+      ],
+      "false_negatives": [
+        "type_3_too_large"
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0
+    },
+    "test_case_info": {
+      "name": "Слишком большие номиналы - критический случай",
+      "description": "Критично большие номиналы резисторов",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±1%\n            - Применение: работа с АЦП микроконтроллера\n            - Входной ток АЦП: 1мкА\n            ",
+      "circuit": {
+        "r1": 10000000.0,
+        "r2": 10000000.0,
+        "vin": 5.0
+      },
+      "expected_error_types": [
+        "type_3_too_large"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 12,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 1.65,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_3_too_large",
+          "description": "Слишком большие номиналы резисторов - чувствительность к шумам, ошибки от входных токов. КРИТЕРИИ: R_total > 10 МОм (всегда ошибка) ИЛИ (R_total > 1 МОм И I_divider < 10 мкА). Граничные случаи (R_total = 10 МОм или R_total = 1 МОм) считаются ошибкой.",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_3_too_large"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 1.65,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Ток делителя должен быть > 10 * I_input_ADC, но I_divider = 0 мкА",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить сопротивление резисторов для увеличения тока делителя."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_3_too_large",
+          "description": "Суммарное сопротивление делителя R_total = 2 МОм, что может привести к чувствительности к шумам.",
+          "reason": "Сопротивления R1 и R2 слишком велики для данного применения.",
+          "suggested_improvement": "Рекомендуется использовать резисторы меньшего номинала для снижения R_total."
+        }
+      ],
+      "recommendations": [
+        "Использовать резисторы с меньшим номиналом для увеличения тока делителя.",
+        "Добавить защитные элементы для предотвращения перенапряжений.",
+        "Проверить использование резисторов с низким температурным коэффициентом для повышения точности."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [
+        "type_5_adc_mismatch"
+      ],
+      "false_negatives": [
+        "type_3_too_large"
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0
+    },
+    "test_case_info": {
+      "name": "Слишком большие номиналы - типичный случай",
+      "description": "Большие номиналы с низким током",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 3.3В\n            - Выходное напряжение: 1.65В ±1%\n            - Применение: работа с АЦП\n            - Входной ток АЦП: 0.5мкА\n            ",
+      "circuit": {
+        "r1": 1000000.0,
+        "r2": 1000000.0,
+        "vin": 3.3
+      },
+      "expected_error_types": [
+        "type_3_too_large"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 13,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 5.0,
+        "current_ma": 1.0,
+        "power_r1_mw": 7.0,
+        "power_r2_mw": 5.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Игнорирование входного сопротивления нагрузки - выходной импеданс делителя сопоставим с нагрузкой",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_4_load_ignored"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 5,
+        "current_ma": 1,
+        "power_r1_mw": 7,
+        "power_r2_mw": 5
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (2.92 кОм) не соответствует требованию ТЗ (< 1 кОм)",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить значения резисторов R1 и R2 для достижения необходимого выходного импеданса."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_5_adc_mismatch",
+          "description": "Ток делителя (1 мА) может быть недостаточен для работы с АЦП, если входное сопротивление АЦП высокое.",
+          "reason": "Не указано требование к току делителя для АЦП в ТЗ.",
+          "suggested_improvement": "Убедиться, что ток делителя соответствует требованиям АЦП."
+        }
+      ],
+      "recommendations": [
+        "Рассмотреть возможность использования резисторов с меньшими номиналами для уменьшения выходного импеданса.",
+        "Проверить совместимость с АЦП и, при необходимости, увеличить ток делителя."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "test_case_info": {
+      "name": "Игнорирование входного сопротивления нагрузки",
+      "description": "Выходной импеданс делителя слишком высок для нагрузки",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 5В ±1%\n            - Входное сопротивление нагрузки: 10 кОм (указано в ТЗ)\n            - Выходной импеданс делителя должен быть < 1 кОм (указано в ТЗ)\n            ",
+      "circuit": {
+        "r1": 7000,
+        "r2": 5000,
+        "vin": 12.0
+      },
+      "expected_error_types": [
+        "type_4_load_ignored"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 14,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.01,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Подключение к АЦП без учета входных параметров (входное сопротивление, ток, емкость)",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_5_adc_mismatch"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Ток делителя (0 мкА) меньше требуемого (10 мкА) для работы с АЦП.",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить сопротивление резисторов R1 и R2 для увеличения тока делителя."
+        },
+        {
+          "error_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя (2.5 МОм) значительно выше входного сопротивления АЦП (1 МОм).",
+          "severity": "значительная",
+          "suggested_fix": "Уменьшить сопротивление резисторов R1 и R2 для снижения выходного импеданса."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_3_too_large",
+          "description": "Суммарное сопротивление делителя (1 МОм) высоко, что может привести к чувствительности к шумам.",
+          "reason": "Сопротивления R1 и R2 равны 500 кОм, что приводит к высокому выходному импедансу.",
+          "suggested_improvement": "Рассмотреть возможность использования резисторов меньшего номинала для снижения выходного импеданса."
+        }
+      ],
+      "recommendations": [
+        "Уменьшить номиналы резисторов R1 и R2 для увеличения тока делителя и снижения выходного импеданса.",
+        "Проверить использование резисторов с низким температурным коэффициентом для повышения точности."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_5_adc_mismatch"
+      ],
+      "false_positives": [
+        "type_4_load_ignored"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Подключение к АЦП без учета параметров",
+      "description": "Ток делителя недостаточен для стабильной работы с АЦП",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±0.1%\n            - Подключение к АЦП микроконтроллера\n            - Входной ток АЦП: 1мкА (указано в ТЗ)\n            - Ток делителя должен быть > 10 * I_input_ADC = 10мкА (указано в ТЗ)\n            ",
+      "circuit": {
+        "r1": 500000,
+        "r2": 500000,
+        "vin": 5.0
+      },
+      "expected_error_types": [
+        "type_5_adc_mismatch"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 15,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 12.0,
+        "current_ma": 5.0,
+        "power_r1_mw": 60.0,
+        "power_r2_mw": 60.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Превышение допустимой мощности резисторов - мощность превышает номинальную мощность компонентов",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_6_power_exceed"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 12,
+        "current_ma": 5,
+        "power_r1_mw": 12,
+        "power_r2_mw": 12
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": false,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Мощность на резисторах превышает допустимую мощность 0.25Вт",
+          "severity": "критическая",
+          "suggested_fix": "Использовать резисторы с большей мощностью, например, 0.5Вт."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя может быть сопоставим с нагрузкой, что может привести к ошибкам в измерениях.",
+          "reason": "Не указано требование к выходному импедансу в ТЗ.",
+          "suggested_improvement": "Уточнить требования к выходному импедансу в ТЗ."
+        },
+        {
+          "warning_type": "type_7_no_protection",
+          "description": "Отсутствие защиты от перенапряжений.",
+          "reason": "Не указано требование к защите в ТЗ.",
+          "suggested_improvement": "Добавить защитные элементы, такие как TVS-диоды."
+        }
+      ],
+      "recommendations": [
+        "Использовать резисторы с большей мощностью (например, 0.5Вт) для предотвращения перегрева.",
+        "Добавить защитные элементы для повышения надежности схемы.",
+        "Уточнить требования к выходному импедансу в ТЗ."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_6_power_exceed"
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "test_case_info": {
+      "name": "Превышение допустимой мощности резисторов",
+      "description": "Мощность на резисторах превышает допустимую",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 24В\n            - Выходное напряжение: 12В ±2%\n            - Максимальная мощность резисторов: 0.25Вт (указано в ТЗ)\n            - Применение: промышленное\n            ",
+      "circuit": {
+        "r1": 2400,
+        "r2": 2400,
+        "vin": 24.0
+      },
+      "expected_error_types": [
+        "type_6_power_exceed"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 16,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 50.0,
+        "power_r1_mw": 125.0,
+        "power_r2_mw": 125.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_2_too_small",
+          "description": "Слишком маленькие номиналы резисторов - перегрев, высокий ток, превышение мощности. КРИТЕРИИ: R_total < 100 Ом (всегда ошибка) ИЛИ (R_total < 1 кОм И I_divider > 5 мА). Граничные случаи (R_total = 100 Ом или R_total = 1 кОм) считаются ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Исправить type_2_too_small"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 50,
+        "power_r1_mw": 125,
+        "power_r2_mw": 125
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": false,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_6_power_exceed",
+          "description": "Мощность резисторов превышает допустимую мощность (125 мВт на резистор при стандартной мощности 100 мВт)",
+          "severity": "значительная",
+          "suggested_fix": "Использовать резисторы с большей мощностью."
+        },
+        {
+          "error_type": "type_2_too_small",
+          "description": "Суммарное сопротивление (100 Ом) является граничным случаем, что считается ошибкой.",
+          "severity": "критическая",
+          "suggested_fix": "Увеличить номиналы резисторов."
+        }
+      ],
+      "warnings": [],
+      "recommendations": [
+        "Использовать резисторы с большей мощностью (например, 1/4 Вт или 1/2 Вт).",
+        "Рассмотреть возможность увеличения значений резисторов для снижения тока и мощности."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [
+        "type_2_too_small"
+      ],
+      "false_positives": [
+        "type_6_power_exceed"
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    },
+    "test_case_info": {
+      "name": "Граничный случай - R_total = 100 Ом",
+      "description": "Граничный случай - R_total точно равен 100 Ом",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±1%\n            - Максимальный ток: 50мА\n            ",
+      "circuit": {
+        "r1": 50,
+        "r2": 50,
+        "vin": 5.0
+      },
+      "expected_error_types": [
+        "type_2_too_small"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 17,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 1.65,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_3_too_large",
+          "description": "Слишком большие номиналы резисторов - чувствительность к шумам, ошибки от входных токов. КРИТЕРИИ: R_total > 10 МОм (всегда ошибка) ИЛИ (R_total > 1 МОм И I_divider < 10 мкА). Граничные случаи (R_total = 10 МОм или R_total = 1 МОм) считаются ошибкой.",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_3_too_large"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 1.65,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": false,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_5_adc_mismatch",
+          "description": "Ток делителя должен быть больше минимального для работы с АЦП, но ток равен 0 мА.",
+          "severity": "критическая",
+          "suggested_fix": "Уменьшить сопротивление резисторов для увеличения тока делителя."
+        }
+      ],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя может быть слишком высоким для подключения к АЦП.",
+          "reason": "Выходной импеданс делителя составляет 250000 Ом, что может быть проблемой для АЦП.",
+          "suggested_improvement": "Рассмотреть возможность уменьшения значений резисторов для снижения выходного импеданса."
+        }
+      ],
+      "recommendations": [
+        "Уменьшить значения резисторов R1 и R2 для увеличения тока делителя.",
+        "Добавить защитные элементы, такие как TVS-диоды, для защиты от перенапряжений.",
+        "Проверить входные параметры АЦП и адаптировать схему под них."
+      ],
+      "overall_rating": "плохо"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [
+        "type_5_adc_mismatch"
+      ],
+      "false_negatives": [
+        "type_3_too_large"
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0
+    },
+    "test_case_info": {
+      "name": "Граничный случай - R_total = 1 МОм",
+      "description": "Граничный случай - R_total точно равен 1 МОм с низким током",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 3.3В\n            - Выходное напряжение: 1.65В ±1%\n            - Применение: работа с АЦП\n            ",
+      "circuit": {
+        "r1": 500000,
+        "r2": 500000,
+        "vin": 3.3
+      },
+      "expected_error_types": [
+        "type_3_too_large"
+      ],
+      "expected_error_count": 1
+    }
+  },
+  {
+    "case_id": 18,
+    "expert": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": false
+      },
+      "detected_errors": [
+        {
+          "error_type": "type_3_too_large",
+          "description": "Слишком большие номиналы резисторов - чувствительность к шумам, ошибки от входных токов. КРИТЕРИИ: R_total > 10 МОм (всегда ошибка) ИЛИ (R_total > 1 МОм И I_divider < 10 мкА). Граничные случаи (R_total = 10 МОм или R_total = 1 МОм) считаются ошибкой.",
+          "severity": "значительная",
+          "suggested_fix": "Исправить type_3_too_large"
+        }
+      ],
+      "recommendations": [
+        "Исправить обнаруженные ошибки"
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "llm": {
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 0.0,
+        "power_r1_mw": 0.0,
+        "power_r2_mw": 0.0
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_tolerance_spec": true,
+        "overall_compliance": true
+      },
+      "detected_errors": [],
+      "warnings": [
+        {
+          "warning_type": "type_4_load_ignored",
+          "description": "Выходной импеданс делителя может быть слишком высоким для некоторых нагрузок.",
+          "reason": "R_out = 2500000.0 Ом, что может быть проблемой для некоторых приложений.",
+          "suggested_improvement": "Рассмотреть возможность использования резисторов меньшего номинала для снижения выходного импеданса."
+        },
+        {
+          "warning_type": "type_5_adc_mismatch",
+          "description": "Ток делителя слишком мал для надежной работы с АЦП.",
+          "reason": "I_divider = 0.0 мА, что может привести к проблемам с измерениями.",
+          "suggested_improvement": "Уменьшить значения резисторов R1 и R2 для увеличения тока делителя."
+        }
+      ],
+      "recommendations": [
+        "Использовать резисторы меньшего номинала для повышения тока делителя.",
+        "Проверить совместимость выходного импеданса с нагрузкой."
+      ],
+      "overall_rating": "удовлетворительно"
+    },
+    "detection": {
+      "true_positives": [],
+      "false_positives": [],
+      "false_negatives": [
+        "type_3_too_large"
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0
+    },
+    "test_case_info": {
+      "name": "Граничный случай - R_total = 10 МОм",
+      "description": "Граничный случай - R_total точно равен 10 МОм",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±1%\n            - Применение: прецизионное измерение\n            ",
+      "circuit": {
+        "r1": 5000000.0,
+        "r2": 5000000.0,
+        "vin": 5.0
+      },
+      "expected_error_types": [
+        "type_3_too_large"
+      ],
+      "expected_error_count": 1
+    }
+  }
+]

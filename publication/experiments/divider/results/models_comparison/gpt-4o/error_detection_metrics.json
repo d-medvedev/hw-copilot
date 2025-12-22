@@ -1,0 +1,78 @@
+{
+  "overall_metrics": {
+    "precision": 0.85,
+    "recall": 0.85,
+    "f1_score": 0.85,
+    "true_positives": 17,
+    "false_positives": 3,
+    "false_negatives": 3
+  },
+  "by_error_type": {
+    "type_1_wrong_ratio": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "true_positives": 5,
+      "false_positives": 0,
+      "false_negatives": 0
+    },
+    "type_2_too_small": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "true_positives": 4,
+      "false_positives": 0,
+      "false_negatives": 0
+    },
+    "type_3_too_large": {
+      "precision": 0.6666666666666666,
+      "recall": 0.5,
+      "f1_score": 0.5714285714285714,
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 2
+    },
+    "type_4_load_ignored": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0
+    },
+    "type_5_adc_mismatch": {
+      "precision": 0.3333333333333333,
+      "recall": 1.0,
+      "f1_score": 0.5,
+      "true_positives": 1,
+      "false_positives": 2,
+      "false_negatives": 0
+    },
+    "type_6_power_exceed": {
+      "precision": 1.0,
+      "recall": 0.6666666666666666,
+      "f1_score": 0.8,
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 1
+    },
+    "type_7_no_protection": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0
+    },
+    "type_8_tcr_ignored": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0
+    }
+  },
+  "successful_analyses": 18,
+  "total_cases": 18
+}

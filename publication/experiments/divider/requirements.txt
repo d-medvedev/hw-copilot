@@ -1,0 +1,8 @@
+openai>=2.14.0
+numpy>=1.26.0
+python-dotenv>=1.0.0
+pathlib
+json
+time
+uuid
+enum
