@@ -1,0 +1,1005 @@
+[
+  {
+    "case_id": 1,
+    "test_case_info": {
+      "name": "Базовый делитель 3.3В",
+      "description": "Простой делитель для стандартного применения",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В ±5%\n            - Выходное напряжение: 3.3В ±2%\n            - Максимальный ток потребления: 1мА\n            - Максимальная мощность резисторов: 0.25Вт\n            - Температурный диапазон: -40°C...+85°C\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 2200.0,
+      "R2": 1000.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 12",
+        "R1 VIN VOUT 2200",
+        "R2 VOUT 0 1000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 3.3,
+        "current": 0.0015,
+        "power_R1": 0.0033,
+        "power_R2": 0.0015,
+        "output_impedance": 733.33
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limit": false,
+        "power_within_limit": true,
+        "output_impedance_within_limit": true
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection_diodes": "not_required"
+      },
+      "explanation": "Выбор резисторов R1 = 2.2kΩ и R2 = 1kΩ обеспечивает выходное напряжение 3.3V при входном напряжении 12V. Ток через делитель составляет 1.5mA, что превышает максимальный ток 1mA, поэтому необходимо уменьшить номиналы резисторов для соответствия требованиям. Выходной импеданс составляет 733.33Ω, что подходит для большинства нагрузок."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 2200.0,
+        "r2": 1000.0,
+        "vin": 12.0,
+        "vout_actual": 3.75,
+        "current_ma": 3.75,
+        "power_r1_mw": 30.9375,
+        "power_r2_mw": 14.0625,
+        "r_out": 687.5,
+        "r_total": 3200.0
+      }
+    }
+  },
+  {
+    "case_id": 2,
+    "test_case_info": {
+      "name": "Батарейное питание - низкий ток",
+      "description": "Делитель для батарейного устройства с низким потреблением",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 9В (батарея)\n            - Выходное напряжение: 4.5В ±3%\n            - Максимальный ток потребления: 0.1мА (для экономии батареи)\n            - Время работы от батареи: >1000 часов\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 10000,
+      "R2": 10000,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 9",
+        "R1 VIN VOUT 10000",
+        "R2 VOUT 0 10000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 4.5,
+        "current": 0.00045,
+        "power_R1": 4.5e-06,
+        "power_R2": 4.5e-06,
+        "R_out": 5000
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "value": 4.5,
+          "tolerance": "±3%",
+          "within_tolerance": true
+        },
+        "max_current": {
+          "value": 0.00045,
+          "exceeds_max": false
+        },
+        "power_rating": {
+          "max_power": 0.25,
+          "exceeds_power": false
+        },
+        "output_impedance": {
+          "value": 5000,
+          "acceptable": true
+        }
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection": "none"
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы по 10 кОм для достижения необходимого выходного напряжения и минимизации тока, что соответствует требованиям по экономии энергии.",
+        "total_resistance": "20 кОм, что находится в пределах допустимого диапазона для батарейных приложений."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 10000.0,
+        "r2": 10000.0,
+        "vin": 9.0,
+        "vout_actual": 4.5,
+        "current_ma": 0.45,
+        "power_r1_mw": 2.025,
+        "power_r2_mw": 2.025,
+        "r_out": 5000.0,
+        "r_total": 20000.0
+      }
+    }
+  },
+  {
+    "case_id": 3,
+    "test_case_info": {
+      "name": "Делитель с учетом нагрузки",
+      "description": "Делитель с требованием к выходному импедансу",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 5В ±1%\n            - Входное сопротивление нагрузки: 10 кОм\n            - Выходной импеданс делителя должен быть < 1 кОм\n            ",
+      "load_info": "\n            ИНФОРМАЦИЯ О НАГРУЗКЕ:\n            - Входное сопротивление нагрузки: 10 кОм\n            - Требуемый выходной импеданс делителя: < 1 кОм\n            ",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 7.5,
+      "R2": 3.3,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 12",
+        "R1 VIN VOUT 7.5k",
+        "R2 VOUT 0 3.3k",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 5.0,
+        "current": 0.0016,
+        "power_R1": 0.012,
+        "power_R2": 0.027,
+        "output_impedance": 1.1
+      },
+      "requirements_check": {
+        "output_voltage": "within tolerance",
+        "current_limit": "not exceeded",
+        "power_limit": "not exceeded",
+        "output_impedance": "exceeds requirement"
+      },
+      "additional_components": {
+        "TVS_diode": "recommended for protection"
+      },
+      "nominal_selection_explanation": "R1 and R2 were selected to achieve the desired output voltage of 5V from a 12V input while ensuring that the output impedance is minimized. The values were chosen to balance the voltage division and load requirements."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 7.5,
+        "r2": 3.3,
+        "vin": 12.0,
+        "vout_actual": 3.666666666666666,
+        "current_ma": 1111.1111111111109,
+        "power_r1_mw": 9259.259259259257,
+        "power_r2_mw": 4074.0740740740725,
+        "r_out": 2.2916666666666665,
+        "r_total": 10.8
+      }
+    }
+  },
+  {
+    "case_id": 4,
+    "test_case_info": {
+      "name": "Делитель для АЦП",
+      "description": "Делитель для работы с АЦП",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±0.1%\n            - Подключение к АЦП микроконтроллера\n            - Входной ток АЦП: 1мкА\n            - Ток делителя должен быть > 10 * I_input_ADC = 10мкА\n            ",
+      "load_info": "\n            ИНФОРМАЦИЯ О НАГРУЗКЕ (АЦП):\n            - Входное сопротивление: 1 МОм\n            - Входной ток: 1 мкА\n            - Входная емкость: 10 пФ\n            - Требуемый ток делителя: > 10 * I_input_ADC = 10 мкА\n            ",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 10000.0,
+      "R2": 10000.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 5",
+        "R1 VIN VOUT 10k",
+        "R2 VOUT 0 10k",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 2.5,
+        "current": 0.00025,
+        "power_R1": 0.000625,
+        "power_R2": 0.000625,
+        "R_out": 5000.0
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "value": 2.5,
+          "tolerance": "±0.1%",
+          "within_tolerance": true
+        },
+        "current": {
+          "value": 0.00025,
+          "max_current": 0.0001,
+          "exceeds_max": false
+        },
+        "power": {
+          "max_power": 0.125,
+          "power_R1": 0.000625,
+          "power_R2": 0.000625,
+          "exceeds_max_power": false
+        },
+        "output_impedance": {
+          "value": 5000.0,
+          "load_impedance": 1000000.0,
+          "within_requirements": true
+        }
+      },
+      "additional_components": {
+        "TVS": "1N5220B",
+        "protection_diodes": "1N4148"
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы 10kΩ для достижения необходимого выходного напряжения 2.5V и обеспечения тока делителя более 10 мкА. Это также соответствует требованиям по выходному импедансу и мощности."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 10.0,
+        "r2": 10.0,
+        "vin": 5.0,
+        "vout_actual": 2.5,
+        "current_ma": 250.0,
+        "power_r1_mw": 625.0,
+        "power_r2_mw": 625.0,
+        "r_out": 5.0,
+        "r_total": 20.0
+      }
+    }
+  },
+  {
+    "case_id": 5,
+    "test_case_info": {
+      "name": "Делитель с защитой от перенапряжения",
+      "description": "Делитель с обязательной защитой",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 30В (с возможными выбросами до 40В)\n            - Выходное напряжение: 3.3В ±1%\n            - Защита от перенапряжения: обязательна\n            - Фильтрация помех: RC-фильтр на выходе\n            - Применение: чувствительная аналоговая схема\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 8200.0,
+      "R2": 1200.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 30",
+        "R1 VIN VOUT 8200",
+        "R2 VOUT 0 1200",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 3.3,
+        "current": 0.003,
+        "power_R1": 0.074,
+        "power_R2": 0.012,
+        "R_out": 1000.0
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "within_tolerance": true,
+          "tolerance_range": "3.267V to 3.333V"
+        },
+        "max_current": {
+          "exceeds_max": false,
+          "max_current": 0.01
+        },
+        "power_rating": {
+          "R1": {
+            "exceeds_rating": false,
+            "rating": 0.125
+          },
+          "R2": {
+            "exceeds_rating": false,
+            "rating": 0.125
+          }
+        },
+        "output_impedance": {
+          "meets_requirement": true,
+          "R_load": 10000.0,
+          "R_out": 1000.0
+        }
+      },
+      "additional_components": {
+        "TVS_diode": {
+          "part_number": "SMBJ30A",
+          "breakdown_voltage": 30,
+          "clamping_voltage": 45
+        }
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы 8.2kΩ и 1.2kΩ для достижения необходимого выходного напряжения 3.3V с учетом допустимых отклонений. Эти значения обеспечивают достаточный ток для работы с АЦП и соответствуют требованиям по мощности и выходному импедансу."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 8200.0,
+        "r2": 1200.0,
+        "vin": 30.0,
+        "vout_actual": 3.8297872340425534,
+        "current_ma": 3.1914893617021276,
+        "power_r1_mw": 83.52195563603439,
+        "power_r2_mw": 12.222725215029424,
+        "r_out": 1046.8085106382978,
+        "r_total": 9400.0
+      }
+    }
+  },
+  {
+    "case_id": 6,
+    "test_case_info": {
+      "name": "Прецизионный делитель",
+      "description": "Прецизионный делитель с требованиями к TCR",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В (стабилизированное)\n            - Выходное напряжение: 2.5В ±0.1%\n            - Температурный диапазон: -55°C...+125°C\n            - Температурный коэффициент: <50ppm/°C\n            - Применение: прецизионное измерение\n            ",
+      "load_info": "",
+      "bom": "\n            ТРЕБОВАНИЯ К КОМПОНЕНТАМ:\n            - Резисторы с низким ТКС (< 50 ppm/°C)\n            - Точность резисторов: ±0.1% или лучше\n            "
+    },
+    "llm_response": {
+      "R1": 2500.0,
+      "R2": 2500.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 5",
+        "R1 VIN VOUT 2500",
+        "R2 VOUT 0 2500",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 2.5,
+        "current": 0.001,
+        "P_R1": 0.00625,
+        "P_R2": 0.00625,
+        "R_out": 1250
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limits": true,
+        "power_within_limits": true,
+        "output_impedance_within_limits": true
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection_diodes": "optional"
+      },
+      "explanation": "Выбор резисторов R1 и R2 равен 2.5 кОм для достижения необходимого выходного напряжения 2.5 В при входном напряжении 5 В. Резисторы имеют одинаковые значения, что обеспечивает симметричный делитель. Ток через делитель составляет 1 мА, что безопасно для большинства приложений. Мощность на каждом резисторе составляет 6.25 мВт, что также в пределах допустимого. Выходной импеданс составляет 1.25 кОм, что подходит для большинства нагрузок."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": true,
+      "errors": [],
+      "warnings": [
+        "TCR requirements may not be addressed"
+      ],
+      "metrics": {
+        "r1": 2500.0,
+        "r2": 2500.0,
+        "vin": 5.0,
+        "vout_actual": 2.5,
+        "current_ma": 1.0,
+        "power_r1_mw": 2.5,
+        "power_r2_mw": 2.5,
+        "r_out": 1250.0,
+        "r_total": 5000.0
+      }
+    }
+  },
+  {
+    "case_id": 7,
+    "test_case_info": {
+      "name": "Промышленный делитель",
+      "description": "Промышленный делитель с ограничением мощности",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 24В ±10%\n            - Выходное напряжение: 12В ±2%\n            - Максимальная мощность резисторов: 0.25Вт\n            - Применение: промышленное\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 22000.0,
+      "R2": 22000.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 24",
+        "R1 VIN VOUT 22000",
+        "R2 VOUT 0 22000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 12,
+        "current": 0.00109,
+        "power_R1": 0.00025,
+        "power_R2": 0.00025,
+        "R_out": 11000
+      },
+      "requirements_check": {
+        "input_voltage": "24V ±10%",
+        "output_voltage": "12V ±2%",
+        "max_power": "0.25W",
+        "current_check": "0.00109A < 0.25W",
+        "output_impedance": "11000Ω < R_load"
+      },
+      "additional_components": {
+        "TVS_diode": "recommended for overvoltage protection"
+      },
+      "explanation": "Выбор резисторов R1 и R2 по 22 кОм обеспечивает необходимое выходное напряжение 12В при входном напряжении 24В. Сопротивления в 22 кОм обеспечивают ток 1.09 мА, что соответствует требованиям для работы с АЦП и не превышает допустимую мощность на резисторах."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": true,
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "r1": 22000.0,
+        "r2": 22000.0,
+        "vin": 24.0,
+        "vout_actual": 12.0,
+        "current_ma": 0.5454545454545455,
+        "power_r1_mw": 6.545454545454546,
+        "power_r2_mw": 6.545454545454546,
+        "r_out": 11000.0,
+        "r_total": 44000.0
+      }
+    }
+  },
+  {
+    "case_id": 8,
+    "test_case_info": {
+      "name": "Делитель для IoT устройства",
+      "description": "Делитель для IoT с ультранизким потреблением",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 3.3В (от микроконтроллера)\n            - Выходное напряжение: 1.65В ±0.5%\n            - Максимальный ток: 10мкА (ультранизкое потребление)\n            - Входной импеданс АЦП: >1МОм\n            - Применение: батарейное устройство IoT\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 10000,
+      "R2": 10000,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 3.3",
+        "R1 VIN VOUT 10000",
+        "R2 VOUT 0 10000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 1.65,
+        "current": 0.000165,
+        "power_R1": 0.000275625,
+        "power_R2": 0.000275625,
+        "output_impedance": 5000
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "value": 1.65,
+          "tolerance": "±0.5%",
+          "within_tolerance": true
+        },
+        "max_current": {
+          "value": 0.000165,
+          "max_allowed": 1e-05,
+          "exceeds_max": false
+        },
+        "power_rating": {
+          "power_R1": 0.000275625,
+          "power_R2": 0.000275625,
+          "max_power": 0.25,
+          "within_limits": true
+        },
+        "output_impedance": {
+          "value": 5000,
+          "max_allowed": 1000000,
+          "within_limits": true
+        }
+      },
+      "additional_components": {
+        "TVS_diode": "recommended for protection against voltage spikes"
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы по 10 кОм для достижения необходимого выходного напряжения и минимизации тока, что соответствует требованиям низкого потребления энергии.",
+        "total_resistance": "Общая сопротивление 20 кОм обеспечивает низкий ток и подходит для работы с АЦП."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": true,
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "r1": 10000.0,
+        "r2": 10000.0,
+        "vin": 3.3,
+        "vout_actual": 1.65,
+        "current_ma": 0.165,
+        "power_r1_mw": 0.27225000000000005,
+        "power_r2_mw": 0.27225000000000005,
+        "r_out": 5000.0,
+        "r_total": 20000.0
+      }
+    }
+  },
+  {
+    "case_id": 9,
+    "test_case_info": {
+      "name": "Делитель с высоким током",
+      "description": "Делитель с требованием к нагрузочной способности",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 6В ±5%\n            - Нагрузочная способность: 5мА\n            - Максимальная мощность резисторов: 0.5Вт\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 10,
+      "R2": 10,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 12",
+        "R1 VIN VOUT 10",
+        "R2 VOUT 0 10",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 6,
+        "current": 0.6,
+        "power_R1": 0.06,
+        "power_R2": 0.06,
+        "R_out": 5
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "value": 6,
+          "within_tolerance": true
+        },
+        "current_limit": {
+          "value": 0.6,
+          "exceeds_limit": false
+        },
+        "power_limit": {
+          "power_R1": 0.06,
+          "power_R2": 0.06,
+          "exceeds_limit": false
+        },
+        "output_impedance": {
+          "value": 5,
+          "meets_requirement": true
+        }
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection_diodes": "not_required"
+      },
+      "nominal_selection_explanation": "Выбраны резисторы 10 Ом для достижения необходимого выходного напряжения 6В при нагрузке 5мА. Номиналы обеспечивают соответствие всем требованиям по мощности и выходному импедансу."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_6_power_exceed",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 10.0,
+        "r2": 10.0,
+        "vin": 12.0,
+        "vout_actual": 6.0,
+        "current_ma": 600.0,
+        "power_r1_mw": 3599.9999999999995,
+        "power_r2_mw": 3599.9999999999995,
+        "r_out": 5.0,
+        "r_total": 20.0
+      }
+    }
+  },
+  {
+    "case_id": 10,
+    "test_case_info": {
+      "name": "Граничный случай - минимальный ток",
+      "description": "Граничный случай с минимальным током",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±1%\n            - Максимальный ток: 10мкА\n            - Применение: работа с АЦП\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 10000,
+      "R2": 10000,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 5",
+        "R1 VIN VOUT 10000",
+        "R2 VOUT 0 10000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 2.5,
+        "current": 0.00025,
+        "power_R1": 0.000625,
+        "power_R2": 0.000625,
+        "R_out": 5000
+      },
+      "requirements_check": {
+        "output_voltage": {
+          "value": 2.5,
+          "tolerance": "±1%",
+          "within_tolerance": true
+        },
+        "max_current": {
+          "value": 0.00025,
+          "max_allowed": 1e-05,
+          "exceeds_max": true
+        },
+        "power_rating": {
+          "max_power": 0.125,
+          "power_R1": 0.000625,
+          "power_R2": 0.000625,
+          "within_limits": true
+        },
+        "output_impedance": {
+          "value": 5000,
+          "acceptable": true
+        }
+      },
+      "additional_components": {
+        "TVS_diode": "recommended for protection against voltage spikes"
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы по 10 кОм для достижения необходимого выходного напряжения 2.5 В. Однако, ток превышает максимальный, что требует пересмотра номиналов."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": true,
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "r1": 10000.0,
+        "r2": 10000.0,
+        "vin": 5.0,
+        "vout_actual": 2.5,
+        "current_ma": 0.25,
+        "power_r1_mw": 0.625,
+        "power_r2_mw": 0.625,
+        "r_out": 5000.0,
+        "r_total": 20000.0
+      }
+    }
+  },
+  {
+    "case_id": 11,
+    "test_case_info": {
+      "name": "Делитель с RC-фильтром",
+      "description": "Делитель с требованием RC-фильтра",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 5В ±1%\n            - Фильтрация помех: RC-фильтр на выходе обязателен\n            - Частота среза фильтра: < 1 кГц\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 7.5,
+      "R2": 4.7,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 12",
+        "R1 VIN VOUT 7.5k",
+        "R2 VOUT 0 4.7k",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 5.0,
+        "current": 0.001,
+        "P_R1": 0.05625,
+        "P_R2": 0.0225,
+        "R_out": 2.8
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limits": true,
+        "power_within_limits": true,
+        "R_out_meets_requirements": true
+      },
+      "additional_components": {
+        "TVS_diode": "1N4007",
+        "protection": "Yes"
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы 7.5k и 4.7k для достижения необходимого деления напряжения с учетом допустимых значений. Общий ток делителя составляет 1 мА, что соответствует требованиям для работы с АЦП."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 7.5,
+        "r2": 4.7,
+        "vin": 12.0,
+        "vout_actual": 4.622950819672132,
+        "current_ma": 983.6065573770493,
+        "power_r1_mw": 7256.11394786348,
+        "power_r2_mw": 4547.164740661115,
+        "r_out": 2.889344262295082,
+        "r_total": 12.2
+      }
+    }
+  },
+  {
+    "case_id": 12,
+    "test_case_info": {
+      "name": "Делитель для высокого напряжения",
+      "description": "Делитель для высокого напряжения с защитой",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 48В (промышленное)\n            - Выходное напряжение: 5В ±1%\n            - Максимальная мощность резисторов: 0.5Вт\n            - Защита от перенапряжения: обязательна\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 8200.0,
+      "R2": 1000.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 48",
+        "R1 VIN VOUT 8200",
+        "R2 VOUT 0 1000",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 5.0,
+        "current": 0.0058,
+        "P_R1": 0.24,
+        "P_R2": 0.029,
+        "R_out": 820.0
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limit": true,
+        "P_R1_within_limit": true,
+        "P_R2_within_limit": true,
+        "R_out_meets_criteria": true
+      },
+      "additional_components": [
+        {
+          "type": "TVS",
+          "description": "TVS diode for overvoltage protection"
+        }
+      ],
+      "explanation": {
+        "R1_R2_selection": "R1 = 8.2kΩ and R2 = 1kΩ were chosen to achieve the desired output voltage of 5V from 48V input while keeping the total resistance within the acceptable range for power dissipation and ensuring the current is sufficient for ADC applications."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 8200.0,
+        "r2": 1000.0,
+        "vin": 48.0,
+        "vout_actual": 5.217391304347826,
+        "current_ma": 5.217391304347826,
+        "power_r1_mw": 223.21361058601138,
+        "power_r2_mw": 27.221172022684314,
+        "r_out": 891.304347826087,
+        "r_total": 9200.0
+      }
+    }
+  },
+  {
+    "case_id": 13,
+    "test_case_info": {
+      "name": "Делитель с точным соотношением",
+      "description": "Делитель с требованием к соотношению резисторов",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 15В\n            - Выходное напряжение: 10В ±1%\n            - Соотношение делителя: 2:3 (R1:R2)\n            - Точность: высокая (резисторы 1%)\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 4.7,
+      "R2": 7.3,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 15",
+        "R1 VIN VOUT 4.7k",
+        "R2 VOUT 0 7.3k",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 10.0,
+        "current": 0.00136,
+        "P_R1": 6.8e-05,
+        "P_R2": 0.0001,
+        "R_out": 2.8
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limits": true,
+        "power_within_limits": true,
+        "R_out_meets_requirements": true
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection_diodes": "not_required"
+      },
+      "explanation": "Выбор резисторов R1 = 4.7k и R2 = 7.3k обеспечивает соотношение 2:3 и выходное напряжение 10V при входном 15V. Резисторы выбраны с допуском 1% для высокой точности. Общий ток делителя составляет 1.36mA, что безопасно для большинства применений. Выходной импеданс 2.8kΩ подходит для работы с АЦП."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 4.7,
+        "r2": 7.3,
+        "vin": 15.0,
+        "vout_actual": 9.125,
+        "current_ma": 1250.0,
+        "power_r1_mw": 7343.75,
+        "power_r2_mw": 11406.25,
+        "r_out": 2.859166666666667,
+        "r_total": 12.0
+      }
+    }
+  },
+  {
+    "case_id": 14,
+    "test_case_info": {
+      "name": "Делитель для низкого напряжения",
+      "description": "Делитель для низковольтного применения",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 1.8В\n            - Выходное напряжение: 0.9В ±2%\n            - Максимальный ток: 50мкА\n            - Применение: низковольтная схема\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 18.2,
+      "R2": 18.2,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 1.8",
+        "R1 VIN VOUT 18.2",
+        "R2 VOUT 0 18.2",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 0.9,
+        "current": 4.95e-05,
+        "power_R1": 4.5e-05,
+        "power_R2": 4.5e-05,
+        "R_out": 9.1
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limit": true,
+        "power_within_limit": true,
+        "R_out_meets_criteria": true
+      },
+      "additional_components": {
+        "TVS_diode": "recommended",
+        "protection_diodes": "not_required"
+      },
+      "explanation": "Выбор резисторов R1 и R2 равен 18.2 Ом для достижения необходимого выходного напряжения 0.9 В при входном напряжении 1.8 В. Это обеспечивает ток 49.5 мкА, что меньше максимального тока 50 мкА. Выходной импеданс составляет 9.1 Ом, что подходит для большинства нагрузок. Резисторы выбраны с учетом низковольтного применения и минимизации потерь энергии."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 18.2,
+        "r2": 18.2,
+        "vin": 1.8,
+        "vout_actual": 0.9,
+        "current_ma": 49.45054945054945,
+        "power_r1_mw": 44.50549450549451,
+        "power_r2_mw": 44.50549450549451,
+        "r_out": 9.1,
+        "r_total": 36.4
+      }
+    }
+  },
+  {
+    "case_id": 15,
+    "test_case_info": {
+      "name": "Делитель с множественными требованиями",
+      "description": "Сложный случай с множественными требованиями",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 18В ±10%\n            - Выходное напряжение: 12В ±1%\n            - Максимальный ток: 0.5мА\n            - Максимальная мощность: 0.1Вт на резистор\n            - Точность: ±0.5%\n            - Температурная стабильность: ±0.05%/°C\n            - Выходной импеданс должен быть < 5 кОм\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "R1": 12.0,
+      "R2": 6.0,
+      "SPICE_netlist": [
+        "Voltage Divider",
+        "V1 VIN 0 18",
+        "R1 VIN VOUT 12",
+        "R2 VOUT 0 6",
+        ".end"
+      ],
+      "calculations": {
+        "Vout": 12.0,
+        "current": 0.5,
+        "power_R1": 0.06,
+        "power_R2": 0.018,
+        "output_impedance": 4.0
+      },
+      "requirements_check": {
+        "Vout_within_tolerance": true,
+        "current_within_limit": true,
+        "power_within_limit": true,
+        "output_impedance_within_limit": true
+      },
+      "additional_components": {
+        "TVS_diode": "1N4007",
+        "protection_needed": true
+      },
+      "explanation": {
+        "R1_R2_selection": "Выбраны резисторы 12 Ом и 6 Ом для достижения необходимого выходного напряжения 12В при входном 18В. Эти значения обеспечивают требуемый ток и мощность на резисторах."
+      }
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": true,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small",
+        "type_6_power_exceed",
+        "type_2_too_small"
+      ],
+      "warnings": [],
+      "metrics": {
+        "r1": 12.0,
+        "r2": 6.0,
+        "vin": 18.0,
+        "vout_actual": 6.0,
+        "current_ma": 1000.0,
+        "power_r1_mw": 12000.0,
+        "power_r2_mw": 6000.0,
+        "r_out": 4.0,
+        "r_total": 18.0
+      }
+    }
+  }
+]

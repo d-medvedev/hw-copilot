@@ -1,0 +1,1712 @@
+[
+  {
+    "case_id": 1,
+    "test_case_info": {
+      "name": "Базовый делитель 3.3В",
+      "description": "Простой делитель для стандартного применения",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В ±5%\n            - Выходное напряжение: 3.3В ±2%\n            - Максимальный ток потребления: 1мА\n            - Максимальная мощность резисторов: 0.25Вт\n            - Температурный диапазон: -40°C...+85°C\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 10000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 12
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin=12>\nR1 VIN VOUT <R1=1000>\nR2 VOUT 0 <R2=10000>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 3.3
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.001
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.001
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.01
+            },
+            "r_out": {
+              "type": "number",
+              "value": 909.09
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "value": []
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Выбор номиналов резисторов основан на требованием к выходному напряжению. Для достижения выходного напряжения 3.3В ±2% были выбраны номиналы R1 = 1000 Ом и R2 = 10000 Ом. Это обеспечивает необходимую точность и экономию энергии."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 2,
+    "test_case_info": {
+      "name": "Батарейное питание - низкий ток",
+      "description": "Делитель для батарейного устройства с низким потреблением",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 9В (батарея)\n            - Выходное напряжение: 4.5В ±3%\n            - Максимальный ток потребления: 0.1мА (для экономии батареи)\n            - Время работы от батареи: >1000 часов\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "circuit": {
+        "r1": 100000,
+        "r2": 50000,
+        "vin": 9,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin=9>\nR1 VIN VOUT <R1=100000>\nR2 VOUT 0 <R2=50000>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 4.5,
+        "current_ma": 0.009,
+        "power_r1_mw": 0.00045,
+        "power_r2_mw": 0.000225,
+        "r_out": 16666.67
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Выбор номиналов резисторов основан на требовании экономии батареи и обеспечении точности выходного напряжения. Выбраны номиналы 100 кОм и 50 кОм, что обеспечивает необходимую точность и экономию энергии."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [
+        "Vout calculation error: 1.500V"
+      ],
+      "metrics": {
+        "r1": 100000,
+        "r2": 50000,
+        "vin": 9,
+        "vout_actual": 3.0,
+        "current_ma": 0.060000000000000005,
+        "power_r1_mw": 0.36000000000000004,
+        "power_r2_mw": 0.18000000000000002,
+        "r_out": 33333.333333333336,
+        "r_total": 150000
+      }
+    }
+  },
+  {
+    "case_id": 3,
+    "test_case_info": {
+      "name": "Делитель с учетом нагрузки",
+      "description": "Делитель с требованием к выходному импедансу",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 5В ±1%\n            - Входное сопротивление нагрузки: 10 кОм\n            - Выходной импеданс делителя должен быть < 1 кОм\n            ",
+      "load_info": "\n            ИНФОРМАЦИЯ О НАГРУЗКЕ:\n            - Входное сопротивление нагрузки: 10 кОм\n            - Требуемый выходной импеданс делителя: < 1 кОм\n            ",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 2500
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 12
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin=12>\nR1 VIN VOUT <R1=1000>\nR2 VOUT 0 <R2=2500>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 5
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.5
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.25
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.625
+            },
+            "r_out": {
+              "type": "number",
+              "value": 0.6666666666666666
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Выбор номиналов резисторов основан на требованием к выходному напряжению и входному сопротивлению нагрузки. Номиналы резисторов R1 и R2 рассчитаны так, чтобы обеспечить выходное напряжение 5В ±1% и выходной импеданс менее 1 кОм."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 4,
+    "test_case_info": {
+      "name": "Делитель для АЦП",
+      "description": "Делитель для работы с АЦП",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±0.1%\n            - Подключение к АЦП микроконтроллера\n            - Входной ток АЦП: 1мкА\n            - Ток делителя должен быть > 10 * I_input_ADC = 10мкА\n            ",
+      "load_info": "\n            ИНФОРМАЦИЯ О НАГРУЗКЕ (АЦП):\n            - Входное сопротивление: 1 МОм\n            - Входной ток: 1 мкА\n            - Входная емкость: 10 пФ\n            - Требуемый ток делителя: > 10 * I_input_ADC = 10 мкА\n            ",
+      "bom": ""
+    },
+    "llm_response": {
+      "circuit": {
+        "r1": 1000,
+        "r2": 5000,
+        "vin": 5,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 2.5,
+        "current_ma": 10,
+        "power_r1_mw": 0.025,
+        "power_r2_mw": 0.125,
+        "r_out": 200
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Выбор номиналов резисторов основан на требовании R_total быть в диапазоне 1 кОм - 1 МОм. Выбраны номиналы R1 = 1000 Ом и R2 = 5000 Ом, что соответствует требуемому R_total = 6000 Ом."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [
+        "Vout calculation error: 1.667V",
+        "Current calculation error: 9.167mA"
+      ],
+      "metrics": {
+        "r1": 1000,
+        "r2": 5000,
+        "vin": 5,
+        "vout_actual": 4.166666666666667,
+        "current_ma": 0.8333333333333334,
+        "power_r1_mw": 0.6944444444444445,
+        "power_r2_mw": 3.4722222222222228,
+        "r_out": 833.3333333333334,
+        "r_total": 6000
+      }
+    }
+  },
+  {
+    "case_id": 5,
+    "test_case_info": {
+      "name": "Делитель с защитой от перенапряжения",
+      "description": "Делитель с обязательной защитой",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 30В (с возможными выбросами до 40В)\n            - Выходное напряжение: 3.3В ±1%\n            - Защита от перенапряжения: обязательна\n            - Фильтрация помех: RC-фильтр на выходе\n            - Применение: чувствительная аналоговая схема\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 3300
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 30
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 3.3
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.009
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 9e-05
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 9e-05
+            },
+            "r_out": {
+              "type": "number",
+              "value": 0.9
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "value": "TVS диод"
+            },
+            {
+              "type": "string",
+              "value": "D1"
+            },
+            {
+              "type": "string",
+              "value": "Защита от перенапряжения"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Резисторы R1 и R2 выбраны так, чтобы обеспечить выходное напряжение 3.3В ±1%. Выбраны номиналы 1 кОм и 3.3 кОм, что соответствует требованиям к делителю напряжения. TVS диод D1 добавлен для защиты от перенапряжения."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 6,
+    "test_case_info": {
+      "name": "Прецизионный делитель",
+      "description": "Прецизионный делитель с требованиями к TCR",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В (стабилизированное)\n            - Выходное напряжение: 2.5В ±0.1%\n            - Температурный диапазон: -55°C...+125°C\n            - Температурный коэффициент: <50ppm/°C\n            - Применение: прецизионное измерение\n            ",
+      "load_info": "",
+      "bom": "\n            ТРЕБОВАНИЯ К КОМПОНЕНТАМ:\n            - Резисторы с низким ТКС (< 50 ppm/°C)\n            - Точность резисторов: ±0.1% или лучше\n            "
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 5000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 5
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 2.5
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.5
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.0025
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.0125
+            },
+            "r_out": {
+              "type": "number",
+              "value": 666.67
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Резисторы выбраны с низким ТКС (< 50 ppm/°C) для обеспечения точности. Номиналы выбраны для достижения выходного напряжения 2.5 В ±0.1% и удовлетворения требований к выходному импедансу."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 7,
+    "test_case_info": {
+      "name": "Промышленный делитель",
+      "description": "Промышленный делитель с ограничением мощности",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 24В ±10%\n            - Выходное напряжение: 12В ±2%\n            - Максимальная мощность резисторов: 0.25Вт\n            - Применение: промышленное\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 2000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 24
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 12
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.5
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.0625
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.0625
+            },
+            "r_out": {
+              "type": "number",
+              "value": 666.67
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Номиналы резисторов выбраны так, чтобы обеспечить выходное напряжение 12В ±2% при входном напряжении 24В ±10%. Выбраны номиналы 1кОм и 2кОм, что соответствует диапазону 1кОм - 1МОм. Ток делителя составляет 0,5мА, что меньше максимального тока. Мощность на резисторах составляет 0,0625Вт, что меньше максимальной мощности 0,25Вт. Выходной импеданс составляет 666,67Ом, что меньше 100Ом. Схема соответствует всем требованиям."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 8,
+    "test_case_info": {
+      "name": "Делитель для IoT устройства",
+      "description": "Делитель для IoT с ультранизким потреблением",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 3.3В (от микроконтроллера)\n            - Выходное напряжение: 1.65В ±0.5%\n            - Максимальный ток: 10мкА (ультранизкое потребление)\n            - Входной импеданс АЦП: >1МОм\n            - Применение: батарейное устройство IoT\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "circuit": {
+        "r1": 1000000,
+        "r2": 100000,
+        "vin": 3.3,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 1.65,
+        "current_ma": 0.001,
+        "power_r1_mw": 1e-06,
+        "power_r2_mw": 1e-06,
+        "r_out": 500000
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Выбор номиналов резисторов основан на требовании к входному импедансу АЦП (>1МОм) и максимальному току (10мкА). Выбраны большие номиналы для экономии энергии в батарейном устройстве. Выходной импеданс рассчитан как (R1 * R2) / (R1 + R2) и составляет 500кОм, что удовлетворяет требованию R_out < X."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_3_too_large"
+      ],
+      "warnings": [
+        "Vout calculation error: 1.350V"
+      ],
+      "metrics": {
+        "r1": 1000000,
+        "r2": 100000,
+        "vin": 3.3,
+        "vout_actual": 0.3,
+        "current_ma": 0.0029999999999999996,
+        "power_r1_mw": 0.009,
+        "power_r2_mw": 0.0008999999999999998,
+        "r_out": 90909.09090909091,
+        "r_total": 1100000
+      }
+    }
+  },
+  {
+    "case_id": 9,
+    "test_case_info": {
+      "name": "Делитель с высоким током",
+      "description": "Делитель с требованием к нагрузочной способности",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 6В ±5%\n            - Нагрузочная способность: 5мА\n            - Максимальная мощность резисторов: 0.5Вт\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "circuit": {
+        "r1": 1000,
+        "r2": 2000,
+        "vin": 12,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 6,
+        "current_ma": 2.5,
+        "power_r1_mw": 0.00625,
+        "power_r2_mw": 0.00625,
+        "r_out": 666.67
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Резисторы выбраны так, чтобы обеспечить выходное напряжение 6В ±5% и ток 5мА. Выбраны стандартные резисторы с высоким ТКС для простых применений."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [
+        "Vout calculation error: 2.000V",
+        "Current calculation error: 1.500mA"
+      ],
+      "metrics": {
+        "r1": 1000,
+        "r2": 2000,
+        "vin": 12,
+        "vout_actual": 8.0,
+        "current_ma": 4.0,
+        "power_r1_mw": 16.0,
+        "power_r2_mw": 32.0,
+        "r_out": 666.6666666666666,
+        "r_total": 3000
+      }
+    }
+  },
+  {
+    "case_id": 10,
+    "test_case_info": {
+      "name": "Граничный случай - минимальный ток",
+      "description": "Граничный случай с минимальным током",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 5В\n            - Выходное напряжение: 2.5В ±1%\n            - Максимальный ток: 10мкА\n            - Применение: работа с АЦП\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 5000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 5
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 2.5
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.001
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.00025
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.00125
+            },
+            "r_out": {
+              "type": "number",
+              "value": 666.67
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Резисторы выбраны так, чтобы обеспечить требуемое выходное напряжение и ток. Выбраны стандартные резисторы с низким ТКС."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 11,
+    "test_case_info": {
+      "name": "Делитель с RC-фильтром",
+      "description": "Делитель с требованием RC-фильтра",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 12В\n            - Выходное напряжение: 5В ±1%\n            - Фильтрация помех: RC-фильтр на выходе обязателен\n            - Частота среза фильтра: < 1 кГц\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 2000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 12
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin=12>\nR1 VIN VOUT <R1=1000>\nR2 VOUT 0 <R2=2000>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 5
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.5
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.25
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.25
+            },
+            "r_out": {
+              "type": "number",
+              "value": 666.67
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "value": "RC-фильтр"
+            },
+            {
+              "type": "string",
+              "value": "C1 0 VOUT 1uF"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Номиналы резисторов выбраны в соответствии с требованиями к делителю напряжения. Верхний резистор R1 равен 1000 Ом, а нижний резистор R2 равен 2000 Ом. Это обеспечивает выходное напряжение 5 В ±1% и соответствует требованиям к выходному импедансу."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 12,
+    "test_case_info": {
+      "name": "Делитель для высокого напряжения",
+      "description": "Делитель для высокого напряжения с защитой",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 48В (промышленное)\n            - Выходное напряжение: 5В ±1%\n            - Максимальная мощность резисторов: 0.5Вт\n            - Защита от перенапряжения: обязательна\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 1000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 4700
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 48
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1> 1000\nR2 VOUT 0 <R2> 4700\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 4.8
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.96
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.00096
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.00432
+            },
+            "r_out": {
+              "type": "number",
+              "value": 196.15
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Резисторы выбраны так, чтобы обеспечить необходимое напряжение и ток. Выбраны стандартные номиналы, чтобы обеспечить простоту и доступность."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 13,
+    "test_case_info": {
+      "name": "Делитель с точным соотношением",
+      "description": "Делитель с требованием к соотношению резисторов",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 15В\n            - Выходное напряжение: 10В ±1%\n            - Соотношение делителя: 2:3 (R1:R2)\n            - Точность: высокая (резисторы 1%)\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "properties": {
+        "circuit": {
+          "type": "object",
+          "properties": {
+            "r1": {
+              "type": "number",
+              "description": "Верхний резистор в Ом",
+              "value": 3000
+            },
+            "r2": {
+              "type": "number",
+              "description": "Нижний резистор в Ом",
+              "value": 6000
+            },
+            "vin": {
+              "type": "number",
+              "description": "Входное напряжение в В",
+              "value": 15
+            },
+            "netlist": {
+              "type": "string",
+              "description": "SPICE netlist схемы",
+              "value": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+            }
+          },
+          "required": [
+            "r1",
+            "r2",
+            "vin",
+            "netlist"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "vout_calculated": {
+              "type": "number",
+              "value": 10
+            },
+            "current_ma": {
+              "type": "number",
+              "value": 0.5
+            },
+            "power_r1_mw": {
+              "type": "number",
+              "value": 0.075
+            },
+            "power_r2_mw": {
+              "type": "number",
+              "value": 0.15
+            },
+            "r_out": {
+              "type": "number",
+              "value": 1500
+            }
+          },
+          "required": [
+            "vout_calculated",
+            "current_ma",
+            "power_r1_mw",
+            "power_r2_mw",
+            "r_out"
+          ],
+          "additionalProperties": false
+        },
+        "requirements_compliance": {
+          "type": "object",
+          "properties": {
+            "meets_voltage_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_current_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_power_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "meets_impedance_spec": {
+              "type": "boolean",
+              "value": true
+            },
+            "overall_compliance": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          "required": [
+            "meets_voltage_spec",
+            "meets_current_spec",
+            "meets_power_spec",
+            "meets_impedance_spec",
+            "overall_compliance"
+          ],
+          "additionalProperties": false
+        },
+        "additional_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Объяснение выбора номиналов",
+          "value": "Номиналы резисторов выбраны в соответствии с соотношением 2:3 и общим сопротивлением в диапазоне 1 кОм - 1 МОм. Выбраны стандартные резисторы с низким ТКС для обеспечения точности."
+        }
+      },
+      "required": [
+        "circuit",
+        "calculations",
+        "requirements_compliance",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "netlist_valid": false,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [],
+      "warnings": [
+        "Invalid circuit parameters: "
+      ],
+      "metrics": {}
+    }
+  },
+  {
+    "case_id": 14,
+    "test_case_info": {
+      "name": "Делитель для низкого напряжения",
+      "description": "Делитель для низковольтного применения",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 1.8В\n            - Выходное напряжение: 0.9В ±2%\n            - Максимальный ток: 50мкА\n            - Применение: низковольтная схема\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "circuit": {
+        "r1": 1000,
+        "r2": 500,
+        "vin": 1.8,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 0.9,
+        "current_ma": 0.05,
+        "power_r1_mw": 2.5e-05,
+        "power_r2_mw": 2.5e-05,
+        "r_out": 500
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Выбор номиналов резисторов основан на требовании R_total быть в диапазоне 1 кОм - 1 МОм. Выбраны номиналы 1000 Ом и 500 Ом, что соответствует этому диапазону. Выходной импеданс R_out рассчитан как (R1 * R2) / (R1 + R2) = 500 Ом, что меньше 1000 Ом, что соответствует требованию."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio"
+      ],
+      "warnings": [
+        "Vout calculation error: 0.300V",
+        "Current calculation error: 1.150mA"
+      ],
+      "metrics": {
+        "r1": 1000,
+        "r2": 500,
+        "vin": 1.8,
+        "vout_actual": 0.6,
+        "current_ma": 1.2000000000000002,
+        "power_r1_mw": 1.4400000000000002,
+        "power_r2_mw": 0.7200000000000001,
+        "r_out": 333.3333333333333,
+        "r_total": 1500
+      }
+    }
+  },
+  {
+    "case_id": 15,
+    "test_case_info": {
+      "name": "Делитель с множественными требованиями",
+      "description": "Сложный случай с множественными требованиями",
+      "requirements": "\n            Требования к делителю напряжения:\n            - Входное напряжение: 18В ±10%\n            - Выходное напряжение: 12В ±1%\n            - Максимальный ток: 0.5мА\n            - Максимальная мощность: 0.1Вт на резистор\n            - Точность: ±0.5%\n            - Температурная стабильность: ±0.05%/°C\n            - Выходной импеданс должен быть < 5 кОм\n            ",
+      "load_info": "",
+      "bom": ""
+    },
+    "llm_response": {
+      "type": "object",
+      "circuit": {
+        "r1": 1000,
+        "r2": 1000,
+        "vin": 18,
+        "netlist": "Voltage Divider\nV1 VIN 0 <Vin>\nR1 VIN VOUT <R1>\nR2 VOUT 0 <R2>\n.end"
+      },
+      "calculations": {
+        "vout_calculated": 12,
+        "current_ma": 0.25,
+        "power_r1_mw": 0.025,
+        "power_r2_mw": 0.025,
+        "r_out": 500
+      },
+      "requirements_compliance": {
+        "meets_voltage_spec": true,
+        "meets_current_spec": true,
+        "meets_power_spec": true,
+        "meets_impedance_spec": true,
+        "overall_compliance": true
+      },
+      "additional_components": [],
+      "rationale": "Резисторы выбраны по номиналу 1 кОм, что соответствует требованиям. Выходное напряжение рассчитано как 12В, что соответствует требуемому значению. Ток делителя составляет 0,25 мА, что меньше максимального значения. Мощность на резисторах составляет 0,025 Вт, что меньше допустимой мощности. Выходной импеданс составляет 500 Ом, что меньше требуемого значения. Схема не требует дополнительных компонентов. Выбраны стандартные резисторы с высоким ТКС."
+    },
+    "validation": {
+      "netlist_valid": true,
+      "calculations_correct": false,
+      "requirements_met": false,
+      "errors": [
+        "type_1_wrong_ratio",
+        "type_2_too_small"
+      ],
+      "warnings": [
+        "Vout calculation error: 3.000V",
+        "Current calculation error: 8.750mA"
+      ],
+      "metrics": {
+        "r1": 1000,
+        "r2": 1000,
+        "vin": 18,
+        "vout_actual": 9.0,
+        "current_ma": 9.0,
+        "power_r1_mw": 80.99999999999999,
+        "power_r2_mw": 80.99999999999999,
+        "r_out": 500.0,
+        "r_total": 2000
+      }
+    }
+  }
+]

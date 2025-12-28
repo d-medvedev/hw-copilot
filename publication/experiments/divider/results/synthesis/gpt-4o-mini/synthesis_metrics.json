@@ -1,0 +1,46 @@
+{
+  "overall_metrics": {
+    "success_rate": 1.0,
+    "calculation_accuracy": 1.0,
+    "requirements_compliance": 0.26666666666666666,
+    "error_rate": 0.0,
+    "total_cases": 15,
+    "successful_syntheses": 15,
+    "requirements_met": 4,
+    "total_errors": 0
+  },
+  "by_error_type": {
+    "type_1_wrong_ratio": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_2_too_small": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_3_too_large": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_4_load_ignored": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_5_adc_mismatch": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_6_power_exceed": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_7_no_protection": {
+      "count": 0,
+      "rate": 0.0
+    },
+    "type_8_tcr_ignored": {
+      "count": 0,
+      "rate": 0.0
+    }
+  }
+}
